@@ -1,4 +1,5 @@
 use crate::anisette_headers_provider::AnisetteHeadersProvider;
+use crate::AnisetteError;
 use anyhow::Result;
 
 use dlopen2::symbor::Library;
@@ -23,13 +24,13 @@ impl<'lt> AOSKitAnisetteProvider<'lt> {
     }
 }
 
-#[cfg_attr(feature = "async", async_trait::async_trait(?Send))]
+#[cfg_attr(feature = "async", async_trait::async_trait)]
 impl<'lt> AnisetteHeadersProvider for AOSKitAnisetteProvider<'lt> {
     #[cfg_attr(not(feature = "async"), remove_async_await::remove_async_await)]
     async fn get_anisette_headers(
         &mut self,
         _skip_provisioning: bool,
-    ) -> Result<HashMap<String, String>> {
+    ) -> Result<HashMap<String, String>, AnisetteError> {
         let mut headers_map = HashMap::new();
 
         let headers: *const NSObject = unsafe {

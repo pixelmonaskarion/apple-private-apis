@@ -29,7 +29,7 @@ mod tests {
             std::io::stdin().read_line(&mut input).unwrap();
             input.trim().to_string()
         };
-        let acc = AppleAccount::login(appleid_closure, tfa_closure).await;
+        let acc = AppleAccount::login(appleid_closure, tfa_closure, AnisetteConfiguration::default()).await;
         let session = XcodeSession::with(&acc.unwrap());
     }
 }
